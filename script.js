@@ -9,7 +9,7 @@ $(document).ready(function(){
     $("#future5").hide();
 
     
-    function displayCityForecast(city){
+    function cityForecast(city){
         var apiKey = "375199121bf30635560db142814fd5ce";
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
 
@@ -37,8 +37,7 @@ $(document).ready(function(){
                 method: "GET"
             }).then(function(response){
 
-
-                var uvIndex = response.value;
+            var uvIndex = response.value;
             $("#cityUVindex").removeClass("fair");
             $("#cityUVindex").removeClass("moderate");
             $("#cityUVindex").removeClass("severe");
@@ -49,5 +48,53 @@ $(document).ready(function(){
                 } else {
                     $("#cityUVindex").addClass("severe");};
                     $("#cityUVindex").text(response.value);});   
-                    $("#city").show();}); 
-};
+                    $("#city").show();});
+                };
+
+
+    function fiveDay(city){
+        var apiKey = "d6563c1f7289474849eef3ceaf635e1d"
+        var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
+                
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function(response){
+            var counter = 1
+            for(var i=0; i < response.list.length; i += 8){
+                var date = moment(response.list[i].dt_txt).format("l");
+                var weatherIcon = response.list[i].weather[0].icon;
+                var temperatureF = (response.list[i].main.temp - 273.15) * 1.80 + 32;
+                                
+                $("#day-" + counter).text(date);
+                $("#icon" + counter).attr("src", "https://openweathermap.org/img/wn/" + weatherIcon + ".png");
+                $("#temp-" + counter).text(temperatureF.toFixed(2) + " \u00B0F");
+                $("#humid-" + counter).text(response.list[i].main.humidity + "%"); counter++;};
+                $("#future5").show();   
+                });
+                };
+                
+    function searchedCities(city){
+        var cityList = $("<li>").text(city)
+        cityList.addClass("searchedCity");
+        $("#searchedCity").append(cityList);};
+                
+                
+    function getCities(){
+        $("#searchedCity").empty();
+        for (var i = 0; i < cities.length; i++) { 
+            searchedCities(cities[i]);
+        };};
+                
+    function weather(city){
+        cityForecast(city);
+        fiveDay(city);};
+    function init() {
+                
+    var storedCities = JSON.parse(localStorage.getItem("searches"));
+        if (storedCities) {
+            cities = storedCities;
+            getCities();
+            weather(cities[cities.length -1]);
+        };};
+    init();
