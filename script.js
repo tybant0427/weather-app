@@ -8,7 +8,7 @@ $(document).ready(function(){
     $("#cityDisplay").hide();
     $("#future5").hide();
 
-    
+    //API call for main city forecast display 
     function cityForecast(city){
         var apiKey = "375199121bf30635560db142814fd5ce";
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
@@ -37,6 +37,7 @@ $(document).ready(function(){
                 method: "GET"
             }).then(function(response){
 
+        // this sets classes to specific UV index 
             var uvIndex = response.value;
             $("#cityUVindex").removeClass("fair");
             $("#cityUVindex").removeClass("moderate");
@@ -51,9 +52,9 @@ $(document).ready(function(){
                     $("#cityDisplay").show();});
                 };
 
-
+    //API call for 5 day future forecast
     function fiveDay(city){
-        var apiKey = "d6563c1f7289474849eef3ceaf635e1d"
+        var apiKey = "375199121bf30635560db142814fd5ce";
         var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
                 
         $.ajax({
@@ -79,7 +80,7 @@ $(document).ready(function(){
         cityList.addClass("searchedCity");
         $("#searchedCity").append(cityList);};
                 
-                
+    //clear            
     function getCities(){
         $("#searchedCity").empty();
         for (var i = 0; i < cities.length; i++) { 
@@ -90,7 +91,7 @@ $(document).ready(function(){
         cityForecast(city);
         fiveDay(city);};
     function init() {
-                
+    //retrieve from LS           
     var storedCities = JSON.parse(localStorage.getItem("searches"));
         if (storedCities) {
             cities = storedCities;
@@ -99,7 +100,7 @@ $(document).ready(function(){
         };};
     init();
 
-
+//save to LS 
 $("#searchBtn").click(function(){
     var cityInputs = $(this).siblings("#cityInput").val().trim();
     $("#cityInput").val("");
