@@ -1,3 +1,19 @@
+h3 {
+    padding-top: 1rem;
+}
+
+#future5 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+ }
+ 
+.card {
+    flex: 1 0 500px;
+    box-sizing: border-box;
+    margin: 1rem .25em;
+}
+
 /*UV index*/
 .fair {
     border-radius: 10px;

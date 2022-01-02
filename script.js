@@ -5,7 +5,7 @@ $(document).ready(function(){
 
     var cities = [];
 
-    $("#searchedCity").hide();
+    $("#cityDisplay").hide();
     $("#future5").hide();
 
     
@@ -48,7 +48,7 @@ $(document).ready(function(){
                 } else {
                     $("#cityUVindex").addClass("severe");};
                     $("#cityUVindex").text(response.value);});   
-                    $("#city").show();});
+                    $("#cityDisplay").show();});
                 };
 
 
@@ -67,7 +67,7 @@ $(document).ready(function(){
                 var temperatureF = (response.list[i].main.temp - 273.15) * 1.80 + 32;
                                 
                 $("#day-" + counter).text(date);
-                $("#icon" + counter).attr("src", "https://openweathermap.org/img/wn/" + weatherIcon + ".png");
+                $("#pic" + counter).attr("src", "https://openweathermap.org/img/wn/" + weatherIcon + ".png");
                 $("#temp-" + counter).text(temperatureF.toFixed(2) + " \u00B0F");
                 $("#humid-" + counter).text(response.list[i].main.humidity + "%"); counter++;};
                 $("#future5").show();   
@@ -98,3 +98,21 @@ $(document).ready(function(){
             weather(cities[cities.length -1]);
         };};
     init();
+
+
+$("#searchBtn").click(function(){
+    var cityInputs = $(this).siblings("#cityInput").val().trim();
+    $("#cityInput").val("");
+    if (cityInputs !== ""){
+        if (cities.indexOf(cityInputs)== -1){
+            cities.push(cityInputs);
+            localStorage.setItem("searches",JSON.stringify(cities));
+            searchedCities(cityInputs);
+        };
+        weather(cityInputs);};
+});
+$("#searchedCity").on("click", ".searchedCity", function(){
+    var cityButton = $(this).text();
+    weather(cityButton);
+});
+});
