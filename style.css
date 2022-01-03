@@ -1,3 +1,7 @@
+ul:hover {
+    cursor: pointer;
+}
+
 h3 {
     padding-top: 1rem;
 }
